@@ -20,7 +20,6 @@ class TestBilinear(unittest.TestCase):
     mask, value = bilinear_resample_image(
       self.feature, self.coordinate, True, True)
 
-    return;
     masknative, valuenative = bilinear_resample_image(
       self.feature, self.coordinate, True, True, tfnative=True)
 
