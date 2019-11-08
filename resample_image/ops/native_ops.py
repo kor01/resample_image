@@ -85,8 +85,8 @@ def resample_image_tfnative(
 
   cy, cx = coordinate[..., 0], coordinate[..., 1]
 
-  mask = tf.greater_equal(cy, 0) & tf.less_equal(cy, H - K + 1)
-  mask = mask & tf.greater_equal(cx, 0) & tf.less_equal(cx, W - K + 1)
+  mask = tf.greater_equal(cy, 0) & tf.less_equal(cy, H - K)
+  mask = mask & tf.greater_equal(cx, 0) & tf.less_equal(cx, W - K)
 
   return mask, value
 
