@@ -11,11 +11,9 @@ with tf.GradientTape(persistent=True) as tape:
 
   tape.watch(feature)
   mask, evidence = resample_image(feature, coordinate, True, False)
-  print('evidence done')
   nmask, nevidence = resample_image(feature, coordinate, True, False, tfnative=True)
-  print('evidence native done')
-  print(np.allclose(evidence, nevidence, atol=5e-7))
-  print(np.array_equal(mask, nmask))
+  np.testing.assert_allclose(evidence, nevidence, atol=5e-7)
+  np.testing.assert_array_equal(mask, nmask)
 
   grad = tf.random.normal(evidence.shape)
   loss = tf.reduce_sum(grad * evidence)

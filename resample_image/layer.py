@@ -12,12 +12,14 @@ class ImageResampleLayer(layers.Layer):
       kernel: str,
       grad_feature: bool,
       grad_coordinate: bool,
-      strides=None):
+      strides=None,
+      onebased=False):
 
     super(ImageResampleLayer, self).__init__()
     self.kernel = kernel
     self.grad_feature = grad_feature
     self.grad_coordinate = grad_coordinate
+    self.onebased = onebased
 
     if strides is not None:
       if isinstance(strides, int):
@@ -39,9 +41,10 @@ class ImageResampleLayer(layers.Layer):
     mask, value = resample_image(
       feature,
       coordinate,
-      grad_coordinate=self.grad_coordinate,
       grad_feature=self.grad_feature,
-      method=self.kernel)
+      grad_coordinate=self.grad_coordinate,
+      method=self.kernel,
+      onebased=self.onebased)
 
     return mask, value
 
@@ -49,7 +52,8 @@ class ImageResampleLayer(layers.Layer):
     return {"kernel": self.kernel,
             "grad_feature": self.grad_feature,
             "grad_coordinate": self.grad_coordinate,
-            'strides': self.strides}
+            'strides': self.strides,
+            'onebased': self.onebased}
 
 
 __all__ = ['ImageResampleLayer']

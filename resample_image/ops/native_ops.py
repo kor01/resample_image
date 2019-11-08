@@ -24,13 +24,16 @@ def _resample_image_gradient(op: tf.Operation, mask_grad, value_grad):
 
   grad_feature = op.get_attr("grad_feature")
   grad_coordinate = op.get_attr("grad_coordinate")
+  onebased = op.get_attr('onebased')
   feature, coordinate, kernel = op.inputs
   mask, value = op.outputs
 
   feature_grad, coordinate_grad = \
     resample_image_gradient_op(
       feature, coordinate, kernel, mask, value, value_grad,
-      grad_feature=grad_feature, grad_coordinate=grad_coordinate)
+      grad_feature=grad_feature,
+      grad_coordinate=grad_coordinate,
+      onebased=onebased)
 
   if not grad_feature:
     feature_grad = None
@@ -63,7 +66,11 @@ def resample_image_tfnative(
     coordinate,
     weight,
     grad_feature,
-    grad_coordinate):
+    grad_coordinate,
+    onebased):
+
+  if onebased:
+    coordinate = coordinate - 1
 
   if not grad_feature:
     feature = tf.stop_gradient(feature)
@@ -97,7 +104,8 @@ def resample_image_generic(
     kernel_fn,
     grad_feature,
     grad_coordinate,
-    tfnative=False):
+    tfnative=False,
+    onebased=False):
 
   if resample_image_ops is None and not tfnative:
     raise ValueError("native library not loaded")
@@ -126,12 +134,13 @@ def resample_image_generic(
 
   if tfnative:
     return resample_image_tfnative(
-      feature, icoordinate, kernel, grad_feature, grad_coordinate)
+      feature, icoordinate, kernel, grad_feature, grad_coordinate, onebased)
   else:
     return resample_image_op(
       feature, icoordinate, kernel,
       grad_feature=grad_feature,
-      grad_coordinate=grad_coordinate)
+      grad_coordinate=grad_coordinate,
+      onebased=onebased)
 
 
 __all__ = ['resample_image_op',

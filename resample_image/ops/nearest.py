@@ -14,7 +14,8 @@ def nearest_resample_image(
     feature, coordinate,
     grad_feature: bool,
     grad_coordinate: bool,
-    tfnative=False):
+    tfnative=False,
+    onebase=False):
 
   if grad_coordinate:
     raise ValueError(
@@ -25,7 +26,8 @@ def nearest_resample_image(
     nearest_kernel,
     grad_feature,
     False,
-    tfnative=tfnative)
+    tfnative=tfnative,
+    onebase=onebase)
 
 
 __all__ = ['nearest_resample_image']

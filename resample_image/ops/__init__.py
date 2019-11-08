@@ -17,6 +17,7 @@ def resample_image(
     grad_coordinate=True,
     method="bilinear",
     tfnative=False,
+    onebased=False,
     **kwargs):
 
   if isinstance(method, str):
@@ -26,6 +27,7 @@ def resample_image(
       grad_feature=grad_feature,
       grad_coordinate=grad_coordinate,
       tfnative=tfnative,
+      onebased=onebased,
       **kwargs)
   else:
     return resample_image_generic(
@@ -34,7 +36,8 @@ def resample_image(
       method,
       grad_coordinate=grad_coordinate,
       grad_feature=grad_coordinate,
-      tfnative=tfnative)
+      tfnative=tfnative,
+      onebased=onebased)
 
 
 __all__ = ['resample_image']
